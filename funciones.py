@@ -36,14 +36,12 @@ def generar_votos():
 
 # Función para determinar el ganador según los votos
 def determinar_ganador(votos):
-    """Determina la opción ganadora según la mayoría"""
     rojo = votos.count("Rojo")
     azul = votos.count("Azul")
     return "Rojo" if rojo > azul else "Azul"
 
 # Función para renderizar texto en pantalla
 def mostrar_texto(pantalla, texto, x, y, fuente, color=(0, 0, 0), centrado=False):
-    """Renderiza texto en pantalla"""
     superficie_texto = fuente.render(texto, True, color)
     rect_texto = superficie_texto.get_rect(center=(x, y) if centrado else (x, y))
     pantalla.blit(superficie_texto, rect_texto)

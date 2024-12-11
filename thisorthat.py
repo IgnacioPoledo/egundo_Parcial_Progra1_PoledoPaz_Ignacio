@@ -9,7 +9,7 @@ pantalla = pygame.display.set_mode((PANTALLA))
 pygame.display.set_caption("THIS OR THAT")
 fuente = pygame.font.Font(None, 36)
 
-# Preguntas
+
 banco_preguntas = [
     {"pregunta": "¿Preferis programar en Python o en JavaScript?", "opciones": ["Rojo", "Azul"], "valor": 100},
     {"pregunta": "¿Qué editor de código preferis VS Code o PyCharm?", "opciones": ["Rojo", "Azul"], "valor": 200},
@@ -18,14 +18,13 @@ banco_preguntas = [
     {"pregunta": "¿Preferis desarrollar o crear codigo?", "opciones": ["Rojo", "Azul"], "valor": 100}
 ]
 
-# Estado del juego
+
 estado_juego = {
-    "jugador": {"nombre": "Jugador", "puntaje": 0, "vidas": 3},
+    "jugador": {"puntaje": 0, "vidas": 3},
     "preguntas_usadas": [],
 }
 
 def juego():
-    
     estado_juego["jugador"]["vidas"] = 3
     estado_juego["jugador"]["puntaje"] = 0
     estado_juego["preguntas_usadas"] = []
@@ -36,6 +35,7 @@ def juego():
     reloj = pygame.time.Clock()
     tiempo_restante = 60
     jugando = True
+    mostrar_colores = False
 
     rect_rojo = pygame.Rect(100, 200, 200, 50)
     rect_azul = pygame.Rect(500, 200, 200, 50)
@@ -43,15 +43,11 @@ def juego():
     rect_next = pygame.Rect(150, 550, 150, 40)  
     rect_half = pygame.Rect(350, 550, 150, 40)  
     rect_reload = pygame.Rect(550, 550, 150, 40)  
-
-    mostrar_colores = False
     
-    # Indica si los comodines se usaron
     next_usado = False 
     half_usado = False  
     reload_usado = False 
 
-    # Votantes
     votantes = []
     for i in range(11):
         x = 175 + (i % 6) * 98  # Posición horizontal

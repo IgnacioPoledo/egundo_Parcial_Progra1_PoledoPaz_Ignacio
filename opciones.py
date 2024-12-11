@@ -36,7 +36,6 @@ click_sonido = pygame.mixer.Sound("Juego/sonidos/sonidos_click.mp3")
 click_sonido.set_volume(1)
 
 def sincronizar_sonidos():
-    """Sincroniza el volumen global."""
     if musica_muted:
         click_sonido.set_volume(0)
         pygame.mixer.music.set_volume(0)
@@ -45,7 +44,6 @@ def sincronizar_sonidos():
         pygame.mixer.music.set_volume(volumen / 100)
 
 def mostrar_opciones(pantalla: pygame.Surface, eventos):
-    """Muestra y gestiona la pantalla de opciones."""
     global volumen, musica_muted
     retorno = "opciones"
 
