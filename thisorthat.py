@@ -36,6 +36,7 @@ def juego():
     tiempo_restante = 60
     jugando = True
     mostrar_colores = False
+    estado_transicion = False
 
     rect_rojo = pygame.Rect(100, 200, 200, 50)
     rect_azul = pygame.Rect(500, 200, 200, 50)
@@ -74,29 +75,30 @@ def juego():
                 jugando = False
                 break
             elif evento.type == pygame.USEREVENT:  # Evento del temporizador
-                mostrar_colores = False  # Reiniciar bandera
-                for votante in votantes:
-                    votante["color"] = GRIS
+                if estado_transicion:  # Si estamos en transición, seleccionar nueva pregunta
+                    pregunta_actual = seleccionar_pregunta(banco_preguntas, estado_juego["preguntas_usadas"])
+                    if not pregunta_actual:  # Si no hay más preguntas
+                        print("¡No hay más preguntas!")
+                        mostrar_victoria(pantalla, estado_juego["jugador"]["puntaje"])
+                        jugando = False
+                    else:
+                        votos = generar_votos()
+                        respuesta_correcta = determinar_ganador(votos)
+                        for votante in votantes:
+                            votante["color"] = GRIS  # Reiniciar colores
+                    estado_transicion = False
+                    mostrar_colores = False
                 pygame.time.set_timer(pygame.USEREVENT, 0)  # Desactivar el temporizador
+            
             if evento.type == pygame.MOUSEBUTTONDOWN: 
-                if rect_rojo.collidepoint(evento.pos):  #
-                    if respuesta_correcta == "Rojo":
+                if rect_rojo.collidepoint(evento.pos):
+                    if not estado_transicion and respuesta_correcta == "Rojo":
                         estado_juego["jugador"]["puntaje"] += pregunta_actual["valor"]
                         print("¡Respuesta correcta!")
                         mostrar_colores = True
                         pygame.time.set_timer(pygame.USEREVENT, 2000)
-                        pregunta_actual = seleccionar_pregunta(banco_preguntas, estado_juego["preguntas_usadas"])
-                        if not pregunta_actual:
-                            print("¡No hay más preguntas!")
-                            mostrar_victoria(pantalla, estado_juego["jugador"]["puntaje"])
-                            jugando = False
-                        else:
-                            votos = generar_votos()
-                            respuesta_correcta = determinar_ganador(votos)
-                            # Reiniciar los colores de los votantes a gris
-                            for votante in votantes:
-                                votante["color"] = GRIS
-                    else:
+                        estado_transicion = True
+                    elif not estado_transicion:
                         print("Respuesta incorrecta.")
                         estado_juego["jugador"]["vidas"] -= 1
                         mostrar_colores = False
@@ -105,23 +107,13 @@ def juego():
                             mostrar_derrota(pantalla, estado_juego["jugador"]["puntaje"])
                             jugando = False
                 elif rect_azul.collidepoint(evento.pos):  # Si clic en el botón "Azul"
-                    if respuesta_correcta == "Azul":
+                    if not estado_transicion and respuesta_correcta == "Azul":
                         estado_juego["jugador"]["puntaje"] += pregunta_actual["valor"]
                         print("¡Respuesta correcta!")
                         mostrar_colores = True
                         pygame.time.set_timer(pygame.USEREVENT, 2000)
-                        pregunta_actual = seleccionar_pregunta(banco_preguntas, estado_juego["preguntas_usadas"])
-                        if not pregunta_actual:
-                            print("¡No hay más preguntas!")
-                            mostrar_victoria(pantalla, estado_juego["jugador"]["puntaje"])
-                            jugando = False
-                        else:
-                            votos = generar_votos()
-                            respuesta_correcta = determinar_ganador(votos)
-                            # Reiniciar los colores de los votantes a gris
-                            for votante in votantes:
-                                votante["color"] = GRIS
-                    else:
+                        estado_transicion = True
+                    elif not estado_transicion:
                         print("Respuesta incorrecta.")
                         estado_juego["jugador"]["vidas"] -= 1
                         mostrar_colores = False

@@ -32,13 +32,22 @@ def seleccionar_pregunta(banco_preguntas, preguntas_usadas):
 
 # Función para generar votos aleatorios
 def generar_votos():
-    return [random.choice(["Rojo", "Azul"]) for _ in range(11)]
+    votos = []
+    for _ in range(11):  
+        votos.append(random.choice(["Rojo", "Azul"]))
+    return votos
 
 # Función para determinar el ganador según los votos
 def determinar_ganador(votos):
-    rojo = votos.count("Rojo")
-    azul = votos.count("Azul")
-    return "Rojo" if rojo > azul else "Azul"
+    conteo = {"Rojo": votos.count("Rojo"), "Azul": votos.count("Azul")}
+    if conteo["Rojo"] > conteo["Azul"]:
+        return "Rojo"
+    elif conteo["Azul"] > conteo["Rojo"]:
+        return "Azul"
+    else:
+        return None  # En caso de empate (puedes manejar esto si es necesario)
+
+    
 
 # Función para renderizar texto en pantalla
 def mostrar_texto(pantalla, texto, x, y, fuente, color=(0, 0, 0), centrado=False):
